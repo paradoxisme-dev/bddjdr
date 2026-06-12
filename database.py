@@ -16,7 +16,7 @@ class BaseModel(Model):
 class User(UserMixin, BaseModel):
     username = CharField(unique=True)
     email = CharField(unique=True, null=True)
-    password_hash = CharField()
+    password_hash = CharField(null=True)
     is_admin = BooleanField(default=False)
 
     def set_password(self, password):
@@ -133,8 +133,12 @@ tables = [
 ]
 
 
-if __name__ == '__main__':
+def initialize_database():
     db = SqliteDatabase('app.db')
     db_proxy.initialize(db)
     db.connect()
     db.create_tables(tables)
+
+
+if __name__ == '__main__':
+    initialize_database()

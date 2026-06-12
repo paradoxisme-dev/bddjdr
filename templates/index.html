@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Base de donnée de jeu de rôle{% endblock %}
+
+{% block content %}
+<h1>Bienvenue sur la base de données de jeu de rôle !</h1>
+<p>Explorez notre collection de jeux de rôle, trouvez des ressources, et connectez-vous avec d'autres passionnés.</p>
+{% if 'discord' in oauth_ok %}
+    <a href="{{ url_for('oauth.login_discord') }}" class="btn btn-primary">Se connecter avec Discord</a>
+{% endif %}
+{% endblock %}
