@@ -1,7 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from external_auth import oauth_bp, oauth, oauth_ok
 from database import initialize_database
-from flask_login import LoginManager
+from flask_login import LoginManager, logout_user
 from database import User
 import os
 import dotenv
@@ -28,6 +28,11 @@ def inject_oauth_ok():
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True, ssl_context='adhoc')

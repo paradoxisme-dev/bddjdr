@@ -11,6 +11,30 @@
 </head>
 <body>
     <main class="container">
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Accueil</a></li>
+            </ul>
+            <ul>
+                <li>
+                {% if 'discord' in oauth_ok %}
+                    <details class="dropdown">
+                        {% if current_user.is_authenticated %}
+                            <summary>{{ current_user.username }}</summary>
+                            <ul class="dropdown">
+                                <li><a href="{{ url_for('logout') }}">Se déconnecter</a></li>
+                            </ul>
+                        {% else %}
+                            <summary>Se connecter</summary>
+                            <ul class="dropdown">
+                                <li><a href="{{ url_for('oauth.login_discord') }}">Se connecter avec Discord</a></li>
+                            </ul>
+                        {% endif %}
+                    </details>
+                {% endif %}
+                </li>
+            </ul>
+        </nav>
     {% block content %}
     {% endblock %}
     </main>
