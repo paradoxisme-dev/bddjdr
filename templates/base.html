@@ -20,7 +20,7 @@
                 {% if 'discord' in oauth_ok %}
                     <details class="dropdown">
                         {% if current_user.is_authenticated %}
-                            <summary>{{ current_user.id }} - {{ current_user.username }}</summary>
+                            <summary>{{ current_user.username }}</summary>
                             <ul class="dropdown">
                                 <li><a href="{{ url_for('logout') }}">Se déconnecter</a></li>
                             </ul>

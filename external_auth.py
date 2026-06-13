@@ -5,6 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
 from database import User, OauthIdentity
+from peewee import IntegrityError
 import os
 import dotenv
 
@@ -65,17 +66,22 @@ if discord_data:
         if not user_info:
             return redirect(url_for('oauth.login_discord'))
         form = RegistrationForm()
-        form.username.data = user_info.get('username', '') if user_info else ''
         if form.validate_on_submit():
-            new_user = User(username=form.username.data)
-            new_user.save()
-            oauth_identity = OauthIdentity(
-                service='discord',
-                service_user_id=user_info['id'],
-                user=new_user
-            )
-            oauth_identity.save()
-            login_user(new_user)
-            session.pop('user_info', None)
-            return redirect(url_for('home'))
+            try:
+                new_user = User(username=form.username.data)
+                new_user.save()
+                oauth_identity = OauthIdentity(
+                    service='discord',
+                    service_user_id=user_info['id'],
+                    user=new_user
+                )
+                oauth_identity.save()
+                login_user(new_user)
+                session.pop('user_info', None)
+                return redirect(url_for('home'))
+            except IntegrityError:
+                if User.select().where((User.username == form.username.data)).exists():
+                    form.username.errors.append('Nom d\'utilisateur déjà utilisé.')
+        else:
+            form.username.data = user_info.get('username', '') if user_info else ''
         return render_template('oauth/discord_registration.html', form=form)

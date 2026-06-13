@@ -8,6 +8,9 @@
     <p>
         {{ form.username.label }}<br>
         {{ form.username(size=32) }}
+        {% for error in form.username.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
     </p>
     <p><input type="submit" value="Register"></p>
 </form>
