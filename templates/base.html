@@ -22,13 +22,13 @@
                         {% if current_user.is_authenticated %}
                             <summary>{{ current_user.username }}</summary>
                             <ul class="dropdown">
-                                <li><a href="{{ url_for('logout') }}">Se déconnecter</a></li>
+                                <li><a href="{{ url_for('user.logout') }}">Se déconnecter</a></li>
                             </ul>
                         {% else %}
                             <summary>Se connecter</summary>
                             <ul class="dropdown">
-                                <li><a href="{{ url_for('login') }}">Se connecter</a></li>
-                                <li><a href="{{ url_for('register') }}">S'inscrire</a></li>
+                                <li><a href="{{ url_for('user.login') }}">Se connecter</a></li>
+                                <li><a href="{{ url_for('user.register') }}">S'inscrire</a></li>
                                 <li><a href="{{ url_for('oauth.login_discord') }}">Se connecter avec Discord</a></li>
                             </ul>
                         {% endif %}

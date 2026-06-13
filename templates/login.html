@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Connexion</h1>
-<form action="{{ url_for('login') }}" method="post">
+<form action="{{ url_for('user.login') }}" method="post">
     {{ form.hidden_tag() }}
     <label for="username">Nom d'utilisateur :</label>
     {{ form.username(size=32) }}
