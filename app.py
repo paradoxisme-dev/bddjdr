@@ -1,17 +1,25 @@
 from flask import Flask, render_template
 from external_auth import oauth_bp, oauth, oauth_ok
 from database import initialize_database
+from flask_login import LoginManager
+from database import User
 import os
 import dotenv
 
 dotenv.load_dotenv()
 initialize_database()
+login_manager = LoginManager()
 
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "supersecretkey")
 oauth.init_app(app)
+login_manager.init_app(app)
 app.register_blueprint(oauth_bp)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 @app.context_processor
 def inject_oauth_ok():
