@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from blueprint.external_auth import oauth_bp, oauth, oauth_ok
 from blueprint.user import user_bp
+from blueprint.game import game_bp
 from database import initialize_database
 from flask_login import LoginManager
 from database import User
@@ -21,6 +22,7 @@ oauth.init_app(app)
 login_manager.init_app(app)
 app.register_blueprint(oauth_bp)
 app.register_blueprint(user_bp)
+app.register_blueprint(game_bp)
 
 
 @login_manager.user_loader

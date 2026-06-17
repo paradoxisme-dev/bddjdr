@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block extra_styles %}
+/* Create the layout container */
+.sidebar-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Style the sidebar */
+.sidebar-layout aside {
+  width: 250px;
+  padding: 1rem;
+  border-right: 1px solid var(--border-color);
+}
+
+/* Force vertical list in the nav */
+.sidebar-layout nav ul {
+  flex-direction: column;
+}
+
+/* Ensure the main content takes the remaining space */
+.sidebar-layout main {
+  flex: 1;
+  padding: 2rem;
+}
+{% endblock %}
+
+{% block content %}
+<div class="sidebar-layout">
+    <aside>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('game.list_games') }}">Liste des jeux</a></li>
+                <li><a href="{{ url_for('game.propose_game') }}">Proposer un jeu</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main>
+        {% block game_content %}
+        {% endblock %}
+    </main>
+</div>
+{% endblock %}
