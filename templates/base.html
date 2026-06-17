@@ -8,6 +8,13 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     >
+    <style>
+        /* 1. Ensure the nav container doesn't react to the absolute dropdown */
+        nav ul li {
+            display: flex; 
+            align-items: center; 
+        }
+    </style>
 </head>
 <body>
     <main class="container">
@@ -21,12 +28,12 @@
                     <details class="dropdown">
                         {% if current_user.is_authenticated %}
                             <summary>{{ current_user.username }}</summary>
-                            <ul class="dropdown">
+                            <ul dir="rtl">
                                 <li><a href="{{ url_for('user.logout') }}">Se déconnecter</a></li>
                             </ul>
                         {% else %}
                             <summary>Se connecter</summary>
-                            <ul class="dropdown">
+                            <ul dir="rtl">
                                 {% if use_classic_login %}
                                     <li><a href="{{ url_for('user.login') }}">Se connecter</a></li>
                                     <li><a href="{{ url_for('user.register') }}">S'inscrire</a></li>
