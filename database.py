@@ -23,6 +23,8 @@ class User(UserMixin, BaseModel):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
+        if self.password_hash is None:
+            return False
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):

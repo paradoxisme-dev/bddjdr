@@ -12,6 +12,7 @@ dotenv.load_dotenv()
 initialize_database()
 login_manager = LoginManager()
 login_manager.login_view = "user.login"
+use_classic_login = os.getenv("USE_CLASSIC_LOGIN", "false").lower() == "true"
 
 
 app = Flask(__name__)
@@ -29,7 +30,10 @@ def load_user(user_id):
 
 @app.context_processor
 def inject_oauth_ok():
-    return dict(oauth_ok=oauth_ok)
+    return dict(
+        oauth_ok=oauth_ok,
+        use_classic_login=use_classic_login
+    )
 
 
 @app.route('/')

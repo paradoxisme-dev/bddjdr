@@ -27,8 +27,10 @@
                         {% else %}
                             <summary>Se connecter</summary>
                             <ul class="dropdown">
-                                <li><a href="{{ url_for('user.login') }}">Se connecter</a></li>
-                                <li><a href="{{ url_for('user.register') }}">S'inscrire</a></li>
+                                {% if use_classic_login %}
+                                    <li><a href="{{ url_for('user.login') }}">Se connecter</a></li>
+                                    <li><a href="{{ url_for('user.register') }}">S'inscrire</a></li>
+                                {% endif %}
                                 <li><a href="{{ url_for('oauth.login_discord') }}">Se connecter avec Discord</a></li>
                             </ul>
                         {% endif %}
