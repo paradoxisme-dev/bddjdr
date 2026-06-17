@@ -29,7 +29,6 @@
             </ul>
             <ul>
                 <li>
-                {% if 'discord' in oauth_ok %}
                     <details class="dropdown">
                         {% if current_user.is_authenticated %}
                             <summary>{{ current_user.username }}</summary>
@@ -43,11 +42,12 @@
                                     <li><a href="{{ url_for('user.login') }}">Se connecter</a></li>
                                     <li><a href="{{ url_for('user.register') }}">S'inscrire</a></li>
                                 {% endif %}
-                                <li><a href="{{ url_for('oauth.login_discord') }}">Se connecter avec Discord</a></li>
+                                {% if 'discord' in oauth_ok %}
+                                    <li><a href="{{ url_for('oauth.login_discord') }}">Se connecter avec Discord</a></li>
+                                {% endif %}
                             </ul>
                         {% endif %}
                     </details>
-                {% endif %}
                 </li>
             </ul>
         </nav>
