@@ -53,6 +53,24 @@ class GameProposal(BaseModel):
     approved_version = ForeignKeyField(Game, backref='proposed_versions', null=True)  # Lien vers la version approuvée du jeu, si applicable
 
 
+class GamePropertyType(BaseModel):
+    name = CharField(unique=True)  # 'genre', 'mechanic', 'theme', etc.
+    description = TextField(null=True)
+    multiple_values_allowed = BooleanField(default=False)  # Indique si plusieurs valeurs sont autorisées pour ce type de propriété (ex: un jeu peut avoir plusieurs genres)
+    only_default_values_allowed = BooleanField(default=False)  # Indique si seules les valeurs par défaut sont autorisées pour ce type de propriété (ex: un jeu ne peut avoir que des genres prédéfinis)
+
+
+class GamePropertyDefaultValue(BaseModel):
+    property_type = ForeignKeyField(GamePropertyType, backref='default_values')
+    value = CharField()  # The default value for the property type (e.g., 'RPG', 'Card Game', 'Fantasy', etc.)
+
+
+class GameProperty(BaseModel):
+    game = ForeignKeyField(Game, backref='properties')
+    property_type = ForeignKeyField(GamePropertyType, backref='game_properties')
+    value = CharField()  # The value of the property (e.g., 'RPG', 'Card Game', 'Fantasy', etc.)
+
+
 class UserGameLinkType(BaseModel):
     name = CharField(unique=True)  # 'player', 'gm', 'interested', 'possible', 'hate', 'like', etc.
     description = TextField(null=True)
@@ -123,6 +141,10 @@ tables = [
     User,
     OauthIdentity,
     Game,
+    GameProposal,
+    GamePropertyType,
+    GamePropertyDefaultValue,
+    GameProperty,
     UserGameLinkType,
     UserGame,
     Ressource,
