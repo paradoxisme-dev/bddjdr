@@ -37,7 +37,7 @@ class OauthIdentity(BaseModel):
     user = ForeignKeyField(User, backref='oauth_identities') # Link to the User model
 
 
-class Game(BaseModel):
+class ApprovedGame(BaseModel):
     name = CharField(unique=True)
     description = TextField(null=True)
 
@@ -47,10 +47,14 @@ class GameProposal(BaseModel):
     description = TextField(null=True)
     proposer = ForeignKeyField(User, backref='proposed_games')
     created_at = DateTimeField(default=datetime.datetime.now)
+
+
+class Game(BaseModel):
+    proposal = ForeignKeyField(GameProposal, backref='game', null=True)  # Lien vers la proposition de jeu, si applicable
+    approved_game = ForeignKeyField(ApprovedGame, backref='game', null=True)  # Lien vers le jeu approuvé, si applicable
     approved = BooleanField(default=False)  # Indique si la proposition a été approuvée par un admin
     approved_by = ForeignKeyField(User, backref='approved_games', null=True)  # Lien vers l'utilisateur qui a approuvé la proposition, si applicable
     approved_at = DateTimeField(null=True)  # Date d'approbation de la proposition, si applicable
-    approved_version = ForeignKeyField(Game, backref='proposed_versions', null=True)  # Lien vers la version approuvée du jeu, si applicable
 
 
 class GamePropertyType(BaseModel):
@@ -78,7 +82,7 @@ class UserGameLinkType(BaseModel):
 
 class UserGame(BaseModel):
     user = ForeignKeyField(User, backref='games')
-    game = ForeignKeyField(Game, backref='users')
+    game = ForeignKeyField(ApprovedGame, backref='users')
     link_type = ForeignKeyField(UserGameLinkType, backref='user_games')
     details = TextField(null=True)  # Détails supplémentaires sur la relation (ex: "J'ai joué à ce jeu pendant 2 ans", "Je suis intéressé mais je n'ai jamais joué", etc.)
 
@@ -87,7 +91,7 @@ class Ressource(BaseModel):
     name = CharField(unique=True)
     description = TextField(null=True)
     url = CharField(null=True)  # URL de la ressource
-    game = ForeignKeyField(Game, backref='resources', null=True)  # Lien vers le jeu associé, si applicable
+    game = ForeignKeyField(ApprovedGame, backref='resources', null=True)  # Lien vers le jeu associé, si applicable
 
 
 class GameSessionLocation(BaseModel):
@@ -98,7 +102,7 @@ class GameSessionLocation(BaseModel):
 
 
 class GameSessionPoll(BaseModel):
-    game = ForeignKeyField(Game, backref='sessions')
+    game = ForeignKeyField(ApprovedGame, backref='sessions')
     open_for_proposals = BooleanField(default=True)  # Indique si les propositions sont encore ouvertes
     end_date = DateTimeField()  # Date limite pour les propositions et les votes
     location = ForeignKeyField(GameSessionLocation, backref='sessions')  # Lieu de la session
@@ -140,8 +144,9 @@ class GameSessionComment(BaseModel):
 tables = [
     User,
     OauthIdentity,
-    Game,
+    ApprovedGame,
     GameProposal,
+    Game,
     GamePropertyType,
     GamePropertyDefaultValue,
     GameProperty,
