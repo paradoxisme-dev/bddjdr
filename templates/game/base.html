@@ -38,6 +38,10 @@
                 {% else %}
                     <li><a href="{{ url_for('game.view_proposals') }}">Mes propositions</a></li>
                 {% endif %}
+                <li><a href="{{ url_for('game.list_property_types') }}">Types de propriétés</a></li>
+                {% if current_user.is_admin %}
+                    <li><a href="{{ url_for('game.add_property_type') }}">Ajouter un type de propriété</a></li>
+                {% endif %}
             </ul>
         </nav>
     </aside>

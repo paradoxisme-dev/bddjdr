@@ -1,0 +1,22 @@
+{% extends 'game/base.html' %}
+
+{% block game_content %}
+    <h1>Liste des types de propriétés</h1>
+    <ul>
+        {% for property_type in property_types %}
+            <li>
+                <strong>{{ property_type.name }}</strong> - {{ property_type.description }}
+                {% if property_type.multiple_values_allowed %}
+                    (Autorise plusieurs valeurs)
+                {% else %}
+                    (N'autorise pas plusieurs valeurs)
+                {% endif %}
+                {% if property_type.only_default_values_allowed %}
+                    (N'autorise que les valeurs par défaut)
+                {% else %}
+                    (Autorise d'autres valeurs que les valeurs par défaut)
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

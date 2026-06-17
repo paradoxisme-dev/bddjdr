@@ -1,0 +1,32 @@
+{% extends 'game/base.html' %}
+
+{% block game_content %}
+    <h1>Ajouter un type de propriété</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+            {% if form.name.errors %}
+                <div class="text-danger">
+                    {% for error in form.name.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.multiple_values_allowed.label(class="form-check-label") }}
+            {{ form.multiple_values_allowed(class="form-check-input") }}
+        </div>
+        <div class="form-group">
+            {{ form.only_default_values_allowed.label(class="form-check-label") }}
+            {{ form.only_default_values_allowed(class="form-check-input") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
+{% endblock %}
