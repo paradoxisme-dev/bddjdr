@@ -50,7 +50,7 @@ class GameProposal(BaseModel):
     approved = BooleanField(default=False)  # Indique si la proposition a été approuvée par un admin
     approved_by = ForeignKeyField(User, backref='approved_games', null=True)  # Lien vers l'utilisateur qui a approuvé la proposition, si applicable
     approved_at = DateTimeField(null=True)  # Date d'approbation de la proposition, si applicable
-    approuved_version = ForeignKeyField(Game, backref='proposed_versions', null=True)  # Lien vers la version approuvée du jeu, si applicable
+    approved_version = ForeignKeyField(Game, backref='proposed_versions', null=True)  # Lien vers la version approuvée du jeu, si applicable
 
 
 class UserGameLinkType(BaseModel):
