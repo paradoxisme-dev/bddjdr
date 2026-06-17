@@ -62,3 +62,18 @@ def approve_game(proposal_id):
         return redirect(url_for('game.list_games'))
     else:
         return "Proposition non trouvée", 404
+
+
+@game_bp.route('/reject/<int:proposal_id>', methods=['POST'])
+@login_required
+def reject_game(proposal_id):
+    if not current_user.is_admin:
+        return "Accès refusé", 403
+
+    proposal = GameProposal.get_or_none(GameProposal.id == proposal_id)
+    if proposal:
+        # Supprimer la proposition de jeu
+        proposal.delete_instance()
+        return redirect(url_for('game.list_games'))
+    else:
+        return "Proposition non trouvée", 404
