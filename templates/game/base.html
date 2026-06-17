@@ -33,6 +33,11 @@
             <ul>
                 <li><a href="{{ url_for('game.list_games') }}">Liste des jeux</a></li>
                 <li><a href="{{ url_for('game.propose_game') }}">Proposer un jeu</a></li>
+                {% if current_user.is_admin %}
+                    <li><a href="{{ url_for('game.view_proposals') }}">Voir les propositions</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('game.view_proposals') }}">Mes propositions</a></li>
+                {% endif %}
             </ul>
         </nav>
     </aside>

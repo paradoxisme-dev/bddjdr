@@ -38,6 +38,16 @@ def propose_game():
     return render_template('game/propose.html', form=form)
 
 
+@game_bp.route('/proposals')
+@login_required
+def view_proposals():
+    if current_user.is_admin:
+        proposals = GameProposal.select()
+    else:
+        proposals = GameProposal.select().where(GameProposal.proposer == current_user.id)
+    return render_template('game/proposals.html', proposals=proposals)
+
+
 @game_bp.route('/approve/<int:proposal_id>', methods=['POST'])
 @login_required
 def approve_game(proposal_id):
@@ -53,12 +63,12 @@ def approve_game(proposal_id):
         )
         # Créer une entrée dans la table Game pour lier la proposition et le jeu approuvé
         Game.create(
-            proposal=proposal,
             approved_game=approved_game,
             approved=True,
             approved_by=current_user.id,
             approved_at=datetime.datetime.now()
         )
+        proposal.delete_instance()  # Supprimer la proposition après approbation
         return redirect(url_for('game.list_games'))
     else:
         return "Proposition non trouvée", 404

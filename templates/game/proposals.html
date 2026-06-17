@@ -1,0 +1,20 @@
+{% extends 'game/base.html' %}
+
+{% block game_content %}
+    <h1>Propositions de jeux</h1>
+    <ul>
+        {% for proposal in proposals %}
+            <li>
+                <strong>{{ proposal.name }}</strong> - {{ proposal.description }}
+                {% if current_user.is_admin %}
+                    <form method="POST" action="{{ url_for('game.approve_game', proposal_id=proposal.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-success btn-sm">Approuver</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('game.reject_game', proposal_id=proposal.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Rejeter</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
