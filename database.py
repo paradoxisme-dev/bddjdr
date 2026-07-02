@@ -162,11 +162,24 @@ tables = [
 ]
 
 
+game_link_types = [
+    {'name': 'joueur', 'description': 'L\'utilisateur a joué à ce jeu.'},
+    {'name': 'mj', 'description': 'L\'utilisateur a été maître de jeu pour ce jeu.'},
+    {'name': 'intéressé', 'description': 'L\'utilisateur est intéressé par ce jeu mais n\'y a pas encore joué.'},
+    {'name': 'possible', 'description': 'L\'utilisateur pourrait jouer à ce jeu à l\'avenir.'},
+    {'name': 'déteste', 'description': 'L\'utilisateur n\'aime pas ce jeu.'},
+    {'name': 'aime', 'description': 'L\'utilisateur aime ce jeu.'},
+]
+
+
 def initialize_database():
     db = SqliteDatabase('app.db')
     db_proxy.initialize(db)
     db.connect()
     db.create_tables(tables)
+    for link_type in game_link_types:
+        UserGameLinkType.get_or_create(name=link_type['name'], defaults={'description': link_type['description']})
+    db.close()
 
 
 if __name__ == '__main__':
