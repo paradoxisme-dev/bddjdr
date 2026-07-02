@@ -37,6 +37,18 @@ class OauthIdentity(BaseModel):
     user = ForeignKeyField(User, backref='oauth_identities') # Link to the User model
 
 
+class DiscordGuild(BaseModel):
+    guild_id = CharField(unique=True)  # The unique ID of the Discord guild
+    name = CharField()  # The name of the Discord guild
+    owner = ForeignKeyField(User, backref='owned_guilds')  # The ID of the owner of the Discord guild
+
+
+class DiscordGuildMember(BaseModel):
+    guild = ForeignKeyField(DiscordGuild, backref='members')  # Link to the DiscordGuild model
+    user = ForeignKeyField(User, backref='discord_memberships')  # Link to the User model
+    roles = TextField()  # A JSON string representing the roles of the member in the guild
+
+
 class ApprovedGame(BaseModel):
     name = CharField(unique=True)
     description = TextField(null=True)
@@ -144,6 +156,8 @@ class GameSessionComment(BaseModel):
 tables = [
     User,
     OauthIdentity,
+    DiscordGuild,
+    DiscordGuildMember,
     ApprovedGame,
     GameProposal,
     Game,
